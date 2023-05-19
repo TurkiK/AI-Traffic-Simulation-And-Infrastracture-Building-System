@@ -325,7 +325,7 @@ public class PrometeoCarController : MonoBehaviour
           ResetSteeringAngle();
         }
 
-      }else{
+      }/*else{
 
         if(Input.GetKey(KeyCode.W)){
           CancelInvoke("DecelerateCar");
@@ -363,7 +363,7 @@ public class PrometeoCarController : MonoBehaviour
           ResetSteeringAngle();
         }
 
-      }
+      }*/
 
 
       // We call the method AnimateWheelMeshes() in order to match the wheel collider movements with the 3D meshes of the wheels.
@@ -771,4 +771,16 @@ public class PrometeoCarController : MonoBehaviour
       }
     }
 
+    public void SetInput(float forwardAmount, float turnAmount)
+    {
+        if (forwardAmount > 0)
+            GoForward();
+        else if (forwardAmount < 0)
+            GoReverse();
+
+        if (turnAmount > 0)
+            TurnRight();
+        else if (turnAmount < 0)
+            TurnLeft();
+    }
 }

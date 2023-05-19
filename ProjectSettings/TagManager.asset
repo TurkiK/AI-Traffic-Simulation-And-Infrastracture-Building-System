@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Agent
+  - Checkpoint
   - Wall
-  - Goal
   layers:
   - Default
   - TransparentFX
@@ -13,9 +14,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Wall
+  - Checkpoint
+  - Agent
   - 
   - 
   - 
