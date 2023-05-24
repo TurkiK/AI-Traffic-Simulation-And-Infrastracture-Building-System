@@ -444,6 +444,15 @@ public class PrometeoCarController : MonoBehaviour
       frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, steeringSpeed);
     }
 
+    public void Straight()
+    {
+        steeringAxis = 0;
+
+        var steeringAngle = steeringAxis * maxSteeringAngle;
+        frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, steeringSpeed);
+        frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, steeringSpeed);
+    }
+
     //The following method takes the front car wheels to their default position (rotation = 0). The speed of this movement will depend
     // on the steeringSpeed variable.
     public void ResetSteeringAngle(){
@@ -782,5 +791,7 @@ public class PrometeoCarController : MonoBehaviour
             TurnRight();
         else if (turnAmount < 0)
             TurnLeft();
+        else if (turnAmount == 0)
+            ResetSteeringAngle();
     }
 }

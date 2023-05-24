@@ -30,13 +30,14 @@ public class CarDriver : Agent
 
     public void TrackCheckpoints_OnWrongCheckpoint()
     {
-        AddReward(-1f);
+        AddReward(-0.5f);
     }
 
     public override void OnEpisodeBegin()
     {
         transform.position = spawnPosition.position + new Vector3(Random.Range(-1.5f, +1.5f), 0, 0);
         transform.forward = spawnPosition.forward;
+        trackCheckpoints.ResetCheckpoints();
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -82,20 +83,12 @@ public class CarDriver : Agent
         discreteActions[1] = turnAction;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Wall"))
+        if (other.gameObject.CompareTag("Wall"))
         {
-            AddReward(-0.5f);
+            AddReward(-10f);
             EndEpisode();
-        }
-    }
-
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Wall"))
-        {
-            AddReward(-0.1f);
         }
     }
 }

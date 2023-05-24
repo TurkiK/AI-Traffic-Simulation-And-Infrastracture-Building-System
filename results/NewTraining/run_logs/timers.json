@@ -1,0 +1,47 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1684880043",
+        "python_version": "3.9.13 (tags/v3.9.13:6de2ca5, May 17 2022, 16:36:42) [MSC v.1929 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\ArSMa\\Desktop\\AI-Traffic-Simulation\\AI-Traffic-Simulation-And-Infrastracture-Building-System\\venv\\Scripts\\mlagents-learn --run-id=NewTraining",
+        "mlagents_version": "0.30.0",
+        "mlagents_envs_version": "0.30.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.7.1+cu110",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1684880072"
+    },
+    "total": 28.3702588,
+    "count": 1,
+    "self": 0.010981999999998493,
+    "children": {
+        "run_training.setup": {
+            "total": 0.1122649,
+            "count": 1,
+            "self": 0.1122649
+        },
+        "TrainerController.start_learning": {
+            "total": 28.2470119,
+            "count": 1,
+            "self": 0.00033249999999895863,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 28.2466726,
+                    "count": 1,
+                    "self": 28.2466726
+                },
+                "trainer_threads": {
+                    "total": 5.999999999062311e-07,
+                    "count": 1,
+                    "self": 5.999999999062311e-07
+                },
+                "TrainerController._save_models": {
+                    "total": 6.2000000013995304e-06,
+                    "count": 1,
+                    "self": 6.2000000013995304e-06
+                }
+            }
+        }
+    }
+}

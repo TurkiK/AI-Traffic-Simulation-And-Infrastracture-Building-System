@@ -33,7 +33,13 @@ public class TrackCheckpoints : MonoBehaviour
         if(checkpointList.IndexOf(checkpoint) == nextCheckpointSingleIndex)
         {
             Debug.Log(checkpointList.IndexOf(checkpoint));
-            nextCheckpointSingleIndex = (nextCheckpointSingleIndex + 1) % checkpointList.Count;
+            if((nextCheckpointSingleIndex + 1) % checkpointList.Count != 0)
+                nextCheckpointSingleIndex = (nextCheckpointSingleIndex + 1) % checkpointList.Count;
+            else{
+                ResetCheckpoints();
+                agent.EndEpisode();
+            }
+
             agent.TrackCheckpoints_OnCorrectCheckpoint();
         }
         else
@@ -46,5 +52,10 @@ public class TrackCheckpoints : MonoBehaviour
     {
 
         return checkpointList[nextCheckpointSingleIndex].transform;
+    }
+
+    public void ResetCheckpoints()
+    {
+        nextCheckpointSingleIndex = 0;
     }
 }
