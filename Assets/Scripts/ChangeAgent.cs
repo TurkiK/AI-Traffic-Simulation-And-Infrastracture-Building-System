@@ -37,6 +37,7 @@ public class ChangeAgent : MonoBehaviour
             if (agentIndex < 0)
                 agentIndex = agentList.Count - 1;
             cam.LookAt = agentList[agentIndex];
+            cam.Follow = agentList[agentIndex];
         }
     }
 }

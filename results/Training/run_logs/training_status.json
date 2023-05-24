@@ -2,22 +2,22 @@
     "CarDriver": {
         "checkpoints": [
             {
-                "steps": 134883,
-                "file_path": "results\\ppo\\CarDriver\\CarDriver-134883.onnx",
+                "steps": 75903,
+                "file_path": "results\\Training\\CarDriver\\CarDriver-75903.onnx",
                 "reward": null,
-                "creation_time": 1684916806.5342212,
+                "creation_time": 1684916011.5038352,
                 "auxillary_file_paths": [
-                    "results\\ppo\\CarDriver\\CarDriver-134883.pt"
+                    "results\\Training\\CarDriver\\CarDriver-75903.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 134883,
-            "file_path": "results\\ppo\\CarDriver.onnx",
+            "steps": 75903,
+            "file_path": "results\\Training\\CarDriver.onnx",
             "reward": null,
-            "creation_time": 1684916806.5342212,
+            "creation_time": 1684916011.5038352,
             "auxillary_file_paths": [
-                "results\\ppo\\CarDriver\\CarDriver-134883.pt"
+                "results\\Training\\CarDriver\\CarDriver-75903.pt"
             ]
         }
     },

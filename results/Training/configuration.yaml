@@ -63,7 +63,7 @@ engine_settings:
   no_graphics: false
 environment_parameters: null
 checkpoint_settings:
-  run_id: NewTest
+  run_id: Training
   initialize_from: null
   load_model: false
   resume: false

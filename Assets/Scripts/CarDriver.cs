@@ -25,17 +25,17 @@ public class CarDriver : Agent
 
     public void TrackCheckpoints_OnCorrectCheckpoint()
     {
-        AddReward(+1f);
+        AddReward(+10f);
     }
 
     public void TrackCheckpoints_OnWrongCheckpoint()
     {
-        AddReward(-0.5f);
+        AddReward(-1f);
     }
 
     public override void OnEpisodeBegin()
     {
-        transform.position = spawnPosition.position + new Vector3(Random.Range(-1.5f, +1.5f), 0, 0);
+        transform.position = spawnPosition.position + new Vector3(Random.Range(-4f, +4f), 0, Random.Range(-4f, +4f));
         transform.forward = spawnPosition.forward;
         trackCheckpoints.ResetCheckpoints();
     }
@@ -83,12 +83,40 @@ public class CarDriver : Agent
         discreteActions[1] = turnAction;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Wall"))
+    /*    private void OnTriggerEnter(Collider other)
         {
+            if (other.gameObject.CompareTag("Wall"))
+            {
+                AddReward(-10f);
+                EndEpisode();
+            }
+        } */
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Agent"))
+        {
+            Debug.Log("Vehicle hit!");
+            AddReward(-20f);
+        }
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            Debug.Log("Wall Hit!");
             AddReward(-10f);
-            EndEpisode();
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            Debug.Log("Wall stay!");
+            AddReward(-5f);
+        }
+        if (collision.gameObject.CompareTag("Agent"))
+        {
+            Debug.Log("Agent stay!");
+            AddReward(-10f);
         }
     }
 }
