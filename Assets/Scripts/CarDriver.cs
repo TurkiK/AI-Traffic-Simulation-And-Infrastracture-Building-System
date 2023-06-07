@@ -8,9 +8,10 @@ using Unity.MLAgents.Actuators;
 public class CarDriver : Agent
 {
     private TrackCheckpoints trackCheckpoints;
-    [SerializeField] private Transform spawnPosition;
-
+    [SerializeField] private Vector3 spawnPosition;
     private PrometeoCarController controller;
+    [SerializeField] private Transform spawn;
+    [SerializeField] private LayerMask carsMask;
 
     private void Awake()
     {
@@ -21,30 +22,23 @@ public class CarDriver : Agent
     // Start is called before the first frame update
     void Start()
     {
-    }
-
-    public void TrackCheckpoints_OnCorrectCheckpoint()
-    {
-        AddReward(+1f);
-    }
-
-    public void TrackCheckpoints_OnWrongCheckpoint()
-    {
-        AddReward(-0.5f);
+        spawn = transform.GetChild(3);
+        spawn.transform.SetParent(spawn.transform.root);
+        spawnPosition = transform.position;
+        spawn.position = spawnPosition;
     }
 
     public override void OnEpisodeBegin()
     {
-        transform.position = spawnPosition.position + new Vector3(Random.Range(-1.5f, +1.5f), 0, 0);
-        transform.forward = spawnPosition.forward;
+        transform.position = spawn.transform.position;
+        transform.forward = spawn.forward;
         trackCheckpoints.ResetCheckpoints();
+        trackCheckpoints.checkpointsReached = 0;
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        Vector3 checkpointForward = trackCheckpoints.GetNextCheckpoint().forward;
-        float directionDot = Vector3.Dot(transform.forward, checkpointForward);
-        sensor.AddObservation(directionDot);
+        sensor.AddObservation(trackCheckpoints.PointDirDot);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -83,12 +77,38 @@ public class CarDriver : Agent
         discreteActions[1] = turnAction;
     }
 
+    public void OnCorrectCheckpoint()
+    {
+        AddReward(+1f);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Agent"))
+        {
+            AddReward(-1.5f);
+        }
+
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            AddReward(-1.25f);
+            EndEpisode();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Wall"))
+        if (other.CompareTag("Checkpoint"))
         {
-            AddReward(-10f);
-            EndEpisode();
+            //OnCorrectCheckpoint reward if the checkpoint has not been visited 
+            trackCheckpoints.CheckpointComplete(other.GetComponent<Checkpoint>());
+        }
+        else if (other.CompareTag("WrongDirection") && !trackCheckpoints.wrongDirection.Contains(other.GetComponent<WrongDirection>())) 
+        { 
+            WrongDirection direction = other.transform.GetComponent<WrongDirection>();
+            trackCheckpoints.StartCoroutine(trackCheckpoints.DisablePoint(direction));
+            trackCheckpoints.directionPenalties++;
+            AddReward(-5f);
         }
     }
 }

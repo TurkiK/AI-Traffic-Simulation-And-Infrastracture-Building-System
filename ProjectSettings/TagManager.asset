@@ -7,19 +7,21 @@ TagManager:
   - Agent
   - Checkpoint
   - Wall
+  - RoadElement
+  - WrongDirection
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Node
   - Water
   - UI
   - Wall
   - Checkpoint
   - Agent
-  - 
-  - 
-  - 
+  - Road
+  - RoadItem
+  - WrongDirection
   - 
   - 
   - 

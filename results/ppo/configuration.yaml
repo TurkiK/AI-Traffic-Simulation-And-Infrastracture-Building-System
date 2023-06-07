@@ -37,7 +37,7 @@ behaviors:
     init_path: null
     keep_checkpoints: 5
     checkpoint_interval: 500000
-    max_steps: 500000
+    max_steps: 5000000
     time_horizon: 64
     summary_freq: 50000
     threaded: false
@@ -66,8 +66,8 @@ checkpoint_settings:
   run_id: ppo
   initialize_from: null
   load_model: false
-  resume: true
-  force: false
+  resume: false
+  force: true
   train_model: false
   inference: false
   results_dir: results
