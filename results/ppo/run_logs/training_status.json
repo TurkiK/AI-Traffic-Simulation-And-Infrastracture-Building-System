@@ -2,58 +2,58 @@
     "CarDriver": {
         "checkpoints": [
             {
-                "steps": 777204,
-                "file_path": "results\\ppo\\CarDriver\\CarDriver-777204.onnx",
-                "reward": 12.415000025182962,
-                "creation_time": 1686228286.4565558,
+                "steps": 2840796,
+                "file_path": "results\\ppo\\CarDriver\\CarDriver-2840796.onnx",
+                "reward": null,
+                "creation_time": 1686248801.0191443,
                 "auxillary_file_paths": [
-                    "results\\ppo\\CarDriver\\CarDriver-777204.pt"
+                    "results\\ppo\\CarDriver\\CarDriver-2840796.pt"
                 ]
             },
             {
-                "steps": 999975,
-                "file_path": "results\\ppo\\CarDriver\\CarDriver-999975.onnx",
-                "reward": 0.2490324154496193,
-                "creation_time": 1686229037.5826135,
+                "steps": 2883462,
+                "file_path": "results\\ppo\\CarDriver\\CarDriver-2883462.onnx",
+                "reward": -47.44500297307968,
+                "creation_time": 1686248926.7880783,
                 "auxillary_file_paths": [
-                    "results\\ppo\\CarDriver\\CarDriver-999975.pt"
+                    "results\\ppo\\CarDriver\\CarDriver-2883462.pt"
                 ]
             },
             {
-                "steps": 1499979,
-                "file_path": "results\\ppo\\CarDriver\\CarDriver-1499979.onnx",
-                "reward": 2.013000153005123,
-                "creation_time": 1686229679.9901469,
+                "steps": 2999972,
+                "file_path": "results\\ppo\\CarDriver\\CarDriver-2999972.onnx",
+                "reward": -10.684994608163834,
+                "creation_time": 1686249119.2436473,
                 "auxillary_file_paths": [
-                    "results\\ppo\\CarDriver\\CarDriver-1499979.pt"
+                    "results\\ppo\\CarDriver\\CarDriver-2999972.pt"
                 ]
             },
             {
-                "steps": 1514238,
-                "file_path": "results\\ppo\\CarDriver\\CarDriver-1514238.onnx",
-                "reward": 6.631428771253143,
-                "creation_time": 1686229758.5942981,
+                "steps": 3499946,
+                "file_path": "results\\ppo\\CarDriver\\CarDriver-3499946.onnx",
+                "reward": -7.571108288235134,
+                "creation_time": 1686249562.627613,
                 "auxillary_file_paths": [
-                    "results\\ppo\\CarDriver\\CarDriver-1514238.pt"
+                    "results\\ppo\\CarDriver\\CarDriver-3499946.pt"
                 ]
             },
             {
-                "steps": 1766321,
-                "file_path": "results\\ppo\\CarDriver\\CarDriver-1766321.onnx",
-                "reward": 1.621153983932275,
-                "creation_time": 1686230240.888305,
+                "steps": 3502930,
+                "file_path": "results\\ppo\\CarDriver\\CarDriver-3502930.onnx",
+                "reward": -3.919999897480011,
+                "creation_time": 1686249627.757962,
                 "auxillary_file_paths": [
-                    "results\\ppo\\CarDriver\\CarDriver-1766321.pt"
+                    "results\\ppo\\CarDriver\\CarDriver-3502930.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 1766321,
+            "steps": 3502930,
             "file_path": "results\\ppo\\CarDriver.onnx",
-            "reward": 1.621153983932275,
-            "creation_time": 1686230240.888305,
+            "reward": -3.919999897480011,
+            "creation_time": 1686249627.757962,
             "auxillary_file_paths": [
-                "results\\ppo\\CarDriver\\CarDriver-1766321.pt"
+                "results\\ppo\\CarDriver\\CarDriver-3502930.pt"
             ]
         }
     },

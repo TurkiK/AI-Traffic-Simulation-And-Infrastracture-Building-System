@@ -6,6 +6,7 @@ using UnityEngine;
 public class RoadBuilder : MonoBehaviour
 {
     public bool locked = false;
+    public bool flipped = false;
 
     public static RoadBuilder Instance;
     public int buildMode = 0;
@@ -16,13 +17,13 @@ public class RoadBuilder : MonoBehaviour
     [SerializeField] private List<Transform> roads;
     [SerializeField] private List<Transform> ghostRoads;
     [SerializeField] private List<Transform> roadElements;
-    [SerializeField] private List<Vector3> objOffsets;
     [SerializeField] private Transform agentGhost;
     [SerializeField] private int objRotation = 0;
     private Node curNode;
     private int curIndex = 0;
 
     [SerializeField] private Vector3 objOffset;
+    [SerializeField] private Vector3 ghostObjOffset;
 
     [SerializeField] private Camera cam;
     [SerializeField] private LayerMask nodeMask;
@@ -57,8 +58,37 @@ public class RoadBuilder : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.M))
                 buildMode = (buildMode + 1) % 2;
 
-            ObjectOffset(currentObject);
-            ObjectOffset(ghostObject);
+            if (currentObject.CompareTag("Road"))
+            {
+                if (objRotation == 0)
+                {
+                    objOffset = new Vector3(0, 0.51f, -0.25f);
+                    ghostObjOffset = new Vector3(0, 0.51f, 0.25f);
+                }
+                else if (objRotation == 90)
+                {
+                    objOffset = new Vector3(-0.25f, 0.51f, 0);
+                    ghostObjOffset = new Vector3(0.25f, 0.51f, 0);
+                }
+                else if (objRotation == 180)
+                {
+                    objOffset = new Vector3(0, 0.51f, 0.25f);
+                    ghostObjOffset = new Vector3(0f, 0.51f, -0.25f);
+                }
+                else if (objRotation == 270)
+                {
+                    objOffset = new Vector3(0.25f, 0.51f, 0);
+                    ghostObjOffset = new Vector3(-0.25f, 0.51f, 0);
+                }
+            }
+            else if (currentObject.CompareTag("Intersection"))
+            {
+                objOffset = new Vector3(0.058f, 0.51f, -0.206f);
+            }
+            else
+            {
+                objOffset = new Vector3(0, 0.51f, 0);
+            }
 
             switch (buildMode)
             {
@@ -71,34 +101,6 @@ public class RoadBuilder : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.T))
                 ChangeObject();
-
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                Flip(ghostObject);
-                Flip(currentObject);
-            }
-        }
-    }
-
-    private void ObjectOffset(Transform obj)
-    {
-        if(obj.name == "Road")
-        {
-            if (objRotation == 0 && currentObject.name == "Road")
-                objOffset = new Vector3(0, 0.51f, -0.25f);
-            else if (objRotation == 90 && currentObject.name == "Road")
-                objOffset = new Vector3(-0.25f, 0.51f, 0);
-            else if (objRotation == 180 && currentObject.name == "Road")
-                objOffset = new Vector3(0, 0.51f, 0.25f);
-            else if (objRotation == 270 && currentObject.name == "Road")
-                objOffset = new Vector3(0.25f, 0.51f, 0);
-        }else if(obj.name == "Intersection")
-        {
-            objOffset = new Vector3(-0.058f, 0.51f, 0.206f);
-        }
-        else
-        {
-            objOffset = new Vector3(0, 0.51f, 0);
         }
     }
 
@@ -122,7 +124,13 @@ public class RoadBuilder : MonoBehaviour
             {
                 ghostObject.SetParent(curNode.gameObject.transform);
                 ghostObject.rotation = Quaternion.Euler(0, objRotation, 0);
-                ghostObject.transform.localPosition = objOffset;
+                ghostObject.transform.localPosition = ghostObjOffset;
+            }
+            else
+            {
+                ghostObject.SetParent(ghostObject.root);
+                ghostObject.rotation = Quaternion.Euler(0, objRotation, 0);
+                ghostObject.transform.localPosition = new Vector3(0, -1000, 0);
             }
 
             if (Input.GetKeyDown(KeyCode.Mouse0) && !curNode.hasRoadObj)
@@ -147,6 +155,7 @@ public class RoadBuilder : MonoBehaviour
                 {
                     Destroy(checkpoint.gameObject);
                 }
+                curNode.checkpoints.Clear();
                 Destroy(curNode.transform.GetChild(0).gameObject);
             }
         }
@@ -166,14 +175,14 @@ public class RoadBuilder : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 1000, roadElemMask))
         {
-            if(ghostObject.CompareTag("Agent"))
-                ghostObject.transform.position = hit.point + new Vector3(0, 1f, 0);
-            else
-                ghostObject.transform.rotation = Quaternion.Euler(0, objRotation, 0);
+            ghostObject.transform.position = hit.point;
+            ghostObject.transform.rotation = Quaternion.Euler(0, objRotation, 0);
 
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 Transform newRoadElem = Instantiate(currentObject);
+                if (newRoadElem.CompareTag("Agent"))
+                    newRoadElem.SetParent(GameObject.Find("Agents").transform);
                 newRoadElem.rotation = Quaternion.Euler(0, objRotation, 0);
                 newRoadElem.transform.position = hit.point;
             }

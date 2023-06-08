@@ -10,6 +10,7 @@ public class CarDriver : Agent
     [Header("Agent stats")]
     [SerializeField] private float rewards = 0;
     public bool inCheckpoint = false;
+    public float waitTimer = 0;
 
     private TrackCheckpoints trackCheckpoints;
     [SerializeField] private Vector3 spawnPosition;
@@ -39,6 +40,7 @@ public class CarDriver : Agent
 
     public override void OnEpisodeBegin()
     {
+        controller.maxSpeed = Random.Range(20, 30);
         transform.position = spawn.transform.position;
         transform.forward = spawn.forward;
         trackCheckpoints.ResetCheckpoints();
@@ -101,7 +103,35 @@ public class CarDriver : Agent
         if (collision.gameObject.CompareTag("Wall"))
         {
             AddReward(-1.25f);
-            EndEpisode();
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Agent"))
+        {
+            AddReward(-0.05f);
+            waitTimer += Time.deltaTime;
+            if (waitTimer > 3)
+            {
+                waitTimer = 0;
+                EndEpisode();
+            }
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            AddReward(+0.025f);
+            waitTimer = 0;
+        }
+
+        if (collision.gameObject.CompareTag("Agent"))
+        {
+            AddReward(+0.025f);
+            waitTimer = 0;
         }
     }
 
