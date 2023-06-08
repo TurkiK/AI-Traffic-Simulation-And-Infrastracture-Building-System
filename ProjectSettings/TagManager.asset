@@ -9,6 +9,7 @@ TagManager:
   - Wall
   - RoadElement
   - WrongDirection
+  - LaneMarking
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Road
   - RoadItem
   - WrongDirection
-  - 
+  - LaneMarking
   - 
   - 
   - 

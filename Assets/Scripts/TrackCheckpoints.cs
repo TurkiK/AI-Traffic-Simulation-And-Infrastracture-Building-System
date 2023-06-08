@@ -14,6 +14,7 @@ public class TrackCheckpoints : MonoBehaviour
     public Transform nextCheckpoint;
 
     [Header("Settings")]
+    public LayerMask roadElements;
     public LayerMask checkpointMask;
     private CarDriver agent;
     private List<Checkpoint> checkpointList;
@@ -39,13 +40,51 @@ public class TrackCheckpoints : MonoBehaviour
     private void Update()
     {
         Ray ray = new Ray(transform.position, transform.forward);
+        Ray rayRight = new Ray(transform.position + (transform.rotation * new Vector3(0.1f, 0.5f, 4f)), transform.right.normalized);
+        Ray rayLeft = new Ray(transform.position + (transform.rotation * new Vector3(-0.1f, 0.5f, 4f)), transform.right.normalized * -1);
+        Debug.DrawRay(transform.position + (transform.rotation * new Vector3(0.1f, 0.5f, 4f)), transform.right.normalized*15, Color.yellow);
+        Debug.DrawRay(transform.position + (transform.rotation * new Vector3(-0.1f, 0.5f, 4f)), (transform.right.normalized * -1)*15, Color.yellow);
+
         if (Physics.Raycast(ray, out RaycastHit hitInfo, 15, checkpointMask))
         {
-            Debug.Log(transform.name + " Ray");
             nextCheckpoint = hitInfo.transform;
             Vector3 checkpointForward = hitInfo.transform.forward;
             if (!previousCheckpoints.Contains(hitInfo.transform.GetComponent<Checkpoint>()))
                 PointDirDot = Vector3.Dot(transform.forward, checkpointForward);
+        }
+
+        if(Physics.Raycast(rayRight, out RaycastHit hitRight, 10, roadElements))
+        {
+            if (hitRight.collider.CompareTag("Agent"))
+            {
+                agent.AddReward(-0.01f);
+            }
+
+            if (hitRight.collider.CompareTag("LaneMarking"))
+            {
+                float distance = Vector3.Distance(transform.position, hitRight.point);
+                if (distance < 4)
+                {
+                    agent.AddReward(-0.01f);
+                }
+            }
+        }
+
+        if(Physics.Raycast(rayLeft, out RaycastHit hitLeft, 10, roadElements))
+        {
+            if (hitLeft.collider.CompareTag("Agent"))
+            {
+                agent.AddReward(-0.01f);
+            }
+
+            if (hitLeft.collider.CompareTag("LaneMarking"))
+            {
+                float distance = Vector3.Distance(transform.position, hitLeft.point);
+                if (distance < 4)
+                {
+                    agent.AddReward(-0.01f);
+                }
+            }
         }
     }
 

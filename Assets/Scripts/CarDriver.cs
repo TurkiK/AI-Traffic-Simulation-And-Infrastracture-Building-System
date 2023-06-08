@@ -7,6 +7,10 @@ using Unity.MLAgents.Actuators;
 
 public class CarDriver : Agent
 {
+    [Header("Agent stats")]
+    [SerializeField] private float rewards = 0;
+    public bool inCheckpoint = false;
+
     private TrackCheckpoints trackCheckpoints;
     [SerializeField] private Vector3 spawnPosition;
     private PrometeoCarController controller;
@@ -26,6 +30,11 @@ public class CarDriver : Agent
         spawn.transform.SetParent(spawn.transform.root);
         spawnPosition = transform.position;
         spawn.position = spawnPosition;
+    }
+
+    private void Update()
+    {
+        rewards = GetCumulativeReward();
     }
 
     public override void OnEpisodeBegin()
@@ -102,6 +111,7 @@ public class CarDriver : Agent
         {
             //OnCorrectCheckpoint reward if the checkpoint has not been visited 
             trackCheckpoints.CheckpointComplete(other.GetComponent<Checkpoint>());
+            inCheckpoint = true;
         }
         else if (other.CompareTag("WrongDirection") && !trackCheckpoints.wrongDirection.Contains(other.GetComponent<WrongDirection>())) 
         { 
@@ -109,6 +119,27 @@ public class CarDriver : Agent
             trackCheckpoints.StartCoroutine(trackCheckpoints.DisablePoint(direction));
             trackCheckpoints.directionPenalties++;
             AddReward(-5f);
+        }
+
+        if (other.CompareTag("LaneMarking"))
+        {
+            AddReward(-0.1f);
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("LaneMarking"))
+        {
+            AddReward(-0.015f);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Checkpoint"))
+        {
+            inCheckpoint = false;
         }
     }
 }
